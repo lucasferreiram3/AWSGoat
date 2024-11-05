@@ -1,0 +1,107 @@
+name: iac-security-action
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build-image:
+    runs-on: ubuntu-latest
+    name: Docker build
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+       
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: ${{ github.repository_owner }}/app:latest
+
+  veracode-container_image-scan:
+    runs-on: ubuntu-latest
+    name: Veracode Container Image scan
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: Veracode Container/IaC/Secrets action step
+        uses: veracode/container_iac_secrets_scanning@v1.0.1
+        with:
+          vid: ${{ secrets.VERACODE_API_KEY_ID }}
+          vkey: ${{ secrets.VERACODE_API_KEY_SECRET }}
+          command: "scan" 
+          type: "image"
+          source: "${{ github.repository_owner }}/app:latest"
+          format: "table"
+          debug: false
+          fail_build: false
+
+  veracode_iac_secrets-scan:
+    runs-on: ubuntu-latest
+    name: Veracode Container/IaC/Secrets scan
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: Veracode Container/IaC/Secrets action step
+        uses: veracode/container_iac_secrets_scanning@v1.0.1
+        with:
+          vid: ${{ secrets.VERACODE_API_KEY_ID }}
+          vkey: ${{ secrets.VERACODE_API_KEY_SECRET }}
+          command: "scan" 
+          type: "directory"
+          source: "./"
+          format: "table"
+          debug: false
+          fail_build: false
+
+  veracode-container_iac_secrets-sbom-cyclonedx:
+    runs-on: ubuntu-latest
+    name: Veracode Container/IaC/Secrets SBOM CycloneDX
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: Veracode Container/IaC/Secrets action step
+        uses: veracode/container_iac_secrets_scanning@v1.0.1
+        with:
+          vid: ${{ secrets.VID }}
+          vkey: ${{ secrets.VKEY }}
+          command: "sbom" 
+          type: "directory"
+          source: "./"
+          format: "cyclonedx-json"
+          debug: false
+          fail_build: false
+
+  veracode-container_iac_secrets-sbom-sdpdx:
+    runs-on: ubuntu-latest
+    name: Veracode Container/IaC/Secrets SBOM SPDX
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: Veracode Container/IaC/Secrets action step
+        uses: veracode/container_iac_secrets_scanning@v1.0.1
+        with:
+          vid: ${{ secrets.VID }}
+          vkey: ${{ secrets.VKEY }}
+          command: "sbom" 
+          type: "directory"
+          source: "./"
+          format: "spdx-json"
+          debug: false
+          fail_build: false
