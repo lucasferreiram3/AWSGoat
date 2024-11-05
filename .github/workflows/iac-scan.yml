@@ -38,8 +38,8 @@ jobs:
       - name: Veracode Container/IaC/Secrets action step
         uses: veracode/container_iac_secrets_scanning@v1.0.1
         with:
-          vid: ${{ secrets.VID }}
-          vkey: ${{ secrets.VKEY }}
+          vid: ${{ secrets.VERACODE_API_KEY_ID }}
+          vkey: ${{ secrets.VERACODE_API_KEY_SECRET }}
           command: "sbom" 
           type: "directory"
           source: "./"
@@ -59,8 +59,8 @@ jobs:
       - name: Veracode Container/IaC/Secrets action step
         uses: veracode/container_iac_secrets_scanning@v1.0.1
         with:
-          vid: ${{ secrets.VID }}
-          vkey: ${{ secrets.VKEY }}
+          vid: ${{ secrets.VERACODE_API_KEY_ID }}
+          vkey: ${{ secrets.VERACODE_API_KEY_SECRET }}
           command: "sbom" 
           type: "directory"
           source: "./"
