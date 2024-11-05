@@ -6,33 +6,6 @@ on:
     branches: [master]
 
 jobs:
-  build-image-and-scan:
-    runs-on: ubuntu-latest
-    name: Buidl image and scan 
-
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-       
-      - name: docker build
-        uses: docker/build-push-action@v6
-        with:
-          context: ./modules/module-2/src
-          file: ./modules/module-2/src/Dockerfile
-          push: false
-
-      - name: Veracode Container/IaC/Secrets action step
-        uses: veracode/container_iac_secrets_scanning@v1.0.1
-        with:
-          vid: ${{ secrets.VERACODE_API_KEY_ID }}
-          vkey: ${{ secrets.VERACODE_API_KEY_SECRET }}
-          command: "scan" 
-          type: "image"
-          source: "${{ github.repository_owner }}/app:latest"
-          format: "table"
-          debug: false
-          fail_build: false
-
   veracode_iac_secrets-scan:
     runs-on: ubuntu-latest
     name: Veracode Container/IaC/Secrets scan
