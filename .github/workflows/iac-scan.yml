@@ -1,8 +1,9 @@
 name: iac-security-action
 
 on:
+  workflow_dispatch:
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
 
