@@ -49,7 +49,7 @@ jobs:
       - name: salvando resultados SBOM
         uses: actions/upload-artifact@v4
         with:
-          name: sbom.json
+          name: sbom-cyclonedx.json
           path: sbom_cyclonedx_json.json
 
   veracode-container_iac_secrets-sbom-sdpdx:
@@ -75,5 +75,5 @@ jobs:
       - name: salvando resultados SBOM
         uses: actions/upload-artifact@v4
         with:
-          name: sbom.json
+          name: sbom-spdx.json
           path: sbom_spdx_json.json
