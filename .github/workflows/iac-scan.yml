@@ -28,7 +28,6 @@ jobs:
 
   veracode-container_iac_secrets-sbom-cyclonedx:
     runs-on: ubuntu-latest
-    needs: [veracode_iac_secrets-scan]
     name: Veracode Container/IaC/Secrets SBOM CycloneDX
 
     steps:
@@ -46,10 +45,15 @@ jobs:
           format: "cyclonedx-json"
           debug: false
           fail_build: false
+      
+      - name: salvando resultados SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom.json
+          path: sbom_cyclonedx_json.json
 
   veracode-container_iac_secrets-sbom-sdpdx:
     runs-on: ubuntu-latest
-    needs: [veracode_iac_secrets-scan]
     name: Veracode Container/IaC/Secrets SBOM SPDX
 
     steps:
@@ -67,3 +71,9 @@ jobs:
           format: "spdx-json"
           debug: false
           fail_build: false
+    
+      - name: salvando resultados SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom.json
+          path: sbom_spdx_json.json
